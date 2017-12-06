@@ -7,7 +7,7 @@ from bson.objectid import ObjectId
 class MongoDBApi(object):
     client = MongoClient('url')  # auth
 
-    def __init__(self,database='movies'):
+    def __init__(self,database='test'):
         self.database = self.client[database]
         # self.collection = self.database[collection]
 
