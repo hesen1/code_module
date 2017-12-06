@@ -34,7 +34,7 @@ class DetailSpider(object):
     mongodb_client = MongoDBApi()
     f = BloomFilter(capacity=10000, error_rate=0.001)
 
-    # 太快了，还有后面不能正常退出
+    # 
     def __init__(self,timeout = 8):
         self.__get_old_url()
         self.user_agents = utils_package.agents
@@ -92,7 +92,7 @@ class DetailSpider(object):
                 logging.warn(u'========抓取完毕=======\n')
                 break
 
-    # 数据已经解析完成--》 可以考虑吧评论也解析出来，有ObjectID入库，把movie_info_data换个键值
+    # 
     def parse(self,response):
         try:
             selector = etree.HTML(response.text)
