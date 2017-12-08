@@ -39,11 +39,13 @@ class DetailSpider(object):
         self.__get_old_url()
         self.user_agents = utils_package.agents
         delay = 0.0005
-        endtime = time.time() + timeout
+        endtime = 0
         # self.redis.set_sadd('movies', *['https://movie.douban.com/subject/20495023/?from=playing_poster','https://movie.douban.com/subject/25837262/','https://movie.douban.com/subject/26378579/?tag=%E7%83%AD%E9%97%A8&from=gaia'])
         while True:
             url = self.redis.set_spop('movies')
             if not url:
+                if not endtime:
+                    endtime = time.time() + timeout
                 delay = min(2*delay,timeout,.05)
                 time.sleep(delay)
                 if endtime - time.time() <= 0.0:
@@ -64,6 +66,7 @@ class DetailSpider(object):
             try:
                 requests.request(url=url,headers=headers,method='get',callback=self.__put_queue,least_delay=0.5,download_delay=round(2*random.random(),2))
                 delay = 0.0005
+                endtime = 0
                 if not self.__begin_parse:
                     self.pool.callInThread(self.__parse_item)
                     self.__begin_parse = True
