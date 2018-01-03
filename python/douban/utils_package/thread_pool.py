@@ -7,12 +7,12 @@ from multiprocessing import cpu_count
 import contextlib
 import threading
 
-WorkerStop = object()  #
+WorkerStop = object()  
 
 
 class ThreadPool:
 
-    workers = 0   #  
+    workers = 0    
 
     threadFactory = threading.Thread
     # 将threading.currentThread
@@ -30,20 +30,20 @@ class ThreadPool:
         self.working = []  # 
 
 
-    # 
+    
     def start(self):
         needSize = self.q.qsize()
         while self.workers < min(self.max, needSize):
             self.startAWorker()
 
-    # 
+     
     def startAWorker(self):
         self.workers += 1
         name = "PoolThread-%s-%s" % (self.name or id(self), self.workers)
         newThread = self.threadFactory(target=self._worker, name=name)
         newThread.start()
 
-    # 
+     
     def callInThread(self, func, *args, **kw):
         self.callInThreadWithCallback(None, func, *args, **kw)
         self.start()  #  
@@ -67,15 +67,15 @@ class ThreadPool:
             o = self.q.get(timeout=5)
         except Empty as err:
             o = WorkerStop
-     # 
-        while o is not WorkerStop:  #  
+      
+        while o is not WorkerStop:    
             with self._workerState(self.working, ct):
              # onResult 默认为None
                 function, args, kwargs, onResult = o
                 del o
                 result = None
                 try:
-                    result = function(*args, **kwargs)  # 
+                    result = function(*args, **kwargs)  
                     success = True
                 except:
                     success = False
@@ -89,18 +89,18 @@ class ThreadPool:
 
                 if onResult is not None:
                     try:
-                        onResult(success, result)  # 
+                        onResult(success, result)  
                     except:
                      #context.call(ctx, log.err)
                         pass
 
                 del onResult, result
 
-            with self._workerState(self.waiters, ct):  #  
+            with self._workerState(self.waiters, ct):   
                 try:
-                    o = self.q.get(timeout=5)  # 
+                    o = self.q.get(timeout=5)  
                 except Empty as err:
-                    o = WorkerStop  # 
+                    o = WorkerStop  
         else:
             self.lock.acquire()
             self.workers -= 1
