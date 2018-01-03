@@ -36,16 +36,16 @@ class PaintingSpider(scrapy.Spider):
     start_urls = ['http://www.baidu.com/']
     dcap = dict(DesiredCapabilities.PHANTOMJS)
     tessdata_dir_config = '--tessdata-dir "E:\\Program Files (x86)\\Tesseract-OCR\\tessdata"'
-    # start_register_no = 199297 # 著作权最低编号
-    # end_register_no = 238200 # 最高编号
-    # search_profix = u'渝作登字-2017-F-00' # 搜索条件前缀
+    # start_register_no = 199297 
+    # end_register_no = 238200 
+    # search_profix = u''
 
     proxyHost = "http-pro.abuyun.com"
     proxyPort = "9010"
 
     # 代理隧道验证信息
-    proxyUser = "HSL083KDN1A99WGP"
-    proxyPass = "D4B6956002DE7C12"
+    proxyUser = ""
+    proxyPass = ""
 
     service_args = [
         "--proxy-type=http",
@@ -69,11 +69,11 @@ class PaintingSpider(scrapy.Spider):
             yield scrapy.Request(url='http://www.baidu.com',dont_filter=True,meta={'conditions':item},callback=self.parse_1)
 
     def parse_1(self, response):
-        index_url = 'http://203.207.196.210:8080/registerinfo/combine.do'
-        domain = 'http://203.207.196.210:8080'
-        start_register_no = response.meta['conditions']['start_register_no']  # 著作权最低编号
-        end_register_no = response.meta['conditions']['end_register_no']  # 最高编号
-        search_profix = response.meta['conditions']['search_profix']  # 搜索条件前缀
+        index_url = ''
+        domain = ''
+        start_register_no = response.meta['conditions']['start_register_no']  
+        end_register_no = response.meta['conditions']['end_register_no']  
+        search_profix = response.meta['conditions']['search_profix']  
 
         for no in xrange(start_register_no,end_register_no):
             try:
@@ -114,7 +114,7 @@ class PaintingSpider(scrapy.Spider):
 
                 work_type = Select(driver.find_element_by_id('worktype'))
                 time.sleep(1)
-                work_type.select_by_value(u'美术')
+                work_type.select_by_value(u'')
                 time.sleep(0.2)
 
                 check_code = driver.find_element_by_id('check_code')
@@ -150,9 +150,8 @@ class PaintingSpider(scrapy.Spider):
                             'Accept-Language':'zh-CN,zh;q=0.9',
                             'Cache-Control': 'max-age=0',
                             'Connection': 'keep-alive',
-                            # 'Cookie': 'JSESSIONID=4236F0574B03ABBF8E648B032F074B2E',
-                            'Host': '203.207.196.210:8080',
-                            'Referer':'http://203.207.196.210:8080/registerinfo/combine.do',
+                            'Host':'',
+                            'Referer':'',
                             'Upgrade-Insecure-Requests':str(1)
                         }
                         # yield scrapy.Request(url=domain + url,dont_filter=True,callback=self.parse_page)
@@ -220,7 +219,7 @@ class PaintingSpider(scrapy.Spider):
         item['record_date'] = record_date
         item['issue_date'] = issue_date
         item['url'] = url
-        item['table_name'] = 'writingInfo__allcountry_WritingInfoBureau'
+        item['table_name'] = ''
 
         return item
 
