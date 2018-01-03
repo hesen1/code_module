@@ -57,7 +57,7 @@ class RuanjianzzqPaintingPipeline(object):
         for data in item:
             if not data:
                 valid = False
-                print 'NOT ANY DATA IN ITEM'
+                print u'无效的item'
 
         if valid:
             d = self.dbpool.runInteraction(self._do_update, item, spider)
@@ -69,11 +69,11 @@ class RuanjianzzqPaintingPipeline(object):
                 mysql = self._sql_create(value_dict)
                 result =conn.execute(mysql)
                 if result:
-                    print 'added a record'
+                    print u'抓取一条数据'
                 else:
-                    print 'failed insert into table '
+                    print u'一条数据入库失败'
 
             except Exception as e:
-                with open('sql_error.txt', 'a') as f:
-                    f.write(item['myurl'] + '\n')
+                with open('insert_error.txt', 'a') as f:
+                    f.write(item['url'] + '\n')
                 print e
