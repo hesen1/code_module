@@ -127,3 +127,34 @@ function updateOne(schema,conditions,updateData,options,callback) {
     });
 }
 exports.updateOne = util.promisify(updateOne);
+
+
+/**
+ * 更具条件查询文档返回指定数据
+ * @param {String} schema schema名 必选
+ * @param {Object} conditions 筛选条件 必选
+ * @param {String} fields 选择字段 可选
+ * @param {Object} options 数据返回操作，常用skip、limit、sort
+ * @param {Function} callback 回调函数=>(err,results) results返回的数据数组
+ */
+function find(schema,conditions,fields,options,callback) {
+    if (!schema || !validators.isString(schema))
+        return callback(new TypeError('invalid argments',null));
+
+    if (!conditions || !validators.isObject(conditions))
+        return callback(new TypeError('invalid argments',null));
+
+    const obj = models[schema];
+    const model = obj.model;
+    fields = fields || obj.keys.join(' ');
+    options = options || {sort:{_id:1}};
+
+    model.find(conditions,fields,options,function(err,results){
+        if (err) {
+            logger.mongodbLogger.error(err);
+            return callback(err,null);
+        }
+        callback(null,results);
+    });
+}
+exports.find = util.promisify(find);
