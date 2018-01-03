@@ -7,7 +7,7 @@ from multiprocessing import cpu_count
 import contextlib
 import threading
 
-WorkerStop = object()  # 再别人基础上修改而成,一时找不到链接。。。
+WorkerStop = object()  #
 
 
 class ThreadPool:
