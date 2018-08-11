@@ -840,7 +840,3 @@ arr.forEach(value => binaryTree.addNode(value));
 // const binaryTree1 = new BinaryTree();
 // arr1.forEach(value => binaryTree1.addNode(value));
 // console.log(binaryTree1.isPerfectBinaryTree());
-
-
-
-// TODO: 翻转二叉树丶堆排、nodejs的timer使用技巧（三个看完，可以看看其它排序）
